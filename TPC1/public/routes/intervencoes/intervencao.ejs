@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Intervenção <%= intervencao.codigo %></title>
+    <link rel="stylesheet" href="/assets/css/style.css">
+</head>
+<body>
+    <div class="main">
+        <%- include("../_templates/navbar.ejs") %>
+        <div class="content-container">
+            <div class="sidebar">
+
+            </div>
+            <div class="content">
+                <h2><%= intervencao.codigo %> : <%= intervencao.nome %></h2>
+                <p><%= intervencao.descricao %></p>
+
+                <br/>
+                <h3>Reparações:</h3>
+                <div class="table entryTable interventions">
+                    <div class="table-row head">
+                            <div class="table-cell">Data</div>
+                            <div class="table-cell">NIF</div>
+                            <div class="table-cell">Nome</div>
+                            <div class="table-cell">Marca</div>
+                            <div class="table-cell">Modelo</div>
+                    </div>
+                    <% for (const rep of reparacoes) { %>
+                        <a href="/reparacao/<%= rep.id %>" class="entry table-row">
+                            <div class="table-cell" name="data"><%= rep.data %></div>
+                            <div class="table-cell" name="nif"><%= rep.nif %></div>
+                            <div class="table-cell" name="nome"><%= rep.nome %></div>
+                            <div class="table-cell" name="marca"><%= rep.viaturas[0].marca %></div>
+                            <div class="table-cell" name="modelo"><%= rep.viaturas[0].modelo %></div>
+                        </a>
+                    <% } %>
+                </div>
+            </div>
+        </div>
+        <%- include("../_templates/footer.ejs") %>
+    </div>
+
+    <script src="/assets/js/main.js"></script>
+</body>
+</html>

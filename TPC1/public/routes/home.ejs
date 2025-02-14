@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Home</title>
+    <link rel="stylesheet" href="/assets/css/style.css">
+</head>
+<body>
+    <div class="main">
+        <%- include("_templates/navbar.ejs") %>
+        <div class="content-container">
+            <div class="sidebar">
+                <h2><a href="/reparacoes">Reparações</a></h2>
+                <h2><a href="/intervencoes">Intervenções</a></h2>
+                <h2><a href="/viaturas">Viaturas</a></h2>
+            </div>
+            <div class="content">
+            </div>
+        </div>
+        <%- include("_templates/footer.ejs") %>
+    </div>
+</body>
+</html>
