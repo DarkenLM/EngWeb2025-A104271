@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Instrumentos</title>
+    <link rel="stylesheet" href="/assets/css/style.css">
+</head>
+<body>
+    <div class="main">
+        <%- include("../_templates/navbar.ejs") %>
+        <div class="content-container">
+            <div class="sidebar">
+                
+            </div>
+            <div class="content">
+                <div class="table entryTable interventions">
+                    <div class="table-row head">
+                            <div class="table-cell">Id</div>
+                            <div class="table-cell">Nome</div>
+                    </div>
+                    <% for (const instrumento of instrumentos) { %>
+                        <a href="/instrumentos/<%= instrumento.id %>" class="entry table-row">
+                            <div class="table-cell" name="id"><%= instrumento.id %></div>
+                            <div class="table-cell" name="nome"><%= instrumento["#text"] %></div>
+                        </a>
+                    <% } %>
+                </div>
+            </div>
+        </div>
+        <%- include("../_templates/footer.ejs") %>
+    </div>
+
+    <script src="/assets/js/main.js"></script>
+</body>
+</html>

@@ -1,0 +1,292 @@
+/*#region ============== Theme Options ==============*/
+/* Generated used https://www.realtimecolors.com/?colors=051b19-f7fefe-2adad8-8f92eb-8e59e2&fonts=Inter-Inter */
+:root {
+    --text-50: #041514;
+    --text-100: #082b27;
+    --text-200: #10564f;
+    --text-300: #188176;
+    --text-400: #21ab9d;
+    --text-500: #29d6c5;
+    --text-600: #54ded0;
+    --text-700: #7ee7dc;
+    --text-800: #a9efe8;
+    --text-900: #d4f7f3;
+    --text-950: #eafbf9;
+
+    --background-50: #031717;
+    --background-100: #052e2e;
+    --background-200: #0a5c5c;
+    --background-300: #0f8a8a;
+    --background-400: #14b8b8;
+    --background-500: #19e5e6;
+    --background-600: #47ebeb;
+    --background-700: #75f0f0;
+    --background-800: #a3f5f5;
+    --background-900: #d1fafa;
+    --background-950: #e8fcfc;
+
+    --primary-50: #041615;
+    --primary-100: #082b2b;
+    --primary-200: #0f5756;
+    --primary-300: #178280;
+    --primary-400: #1fadab;
+    --primary-500: #26d9d6;
+    --primary-600: #52e0de;
+    --primary-700: #7de8e6;
+    --primary-800: #a8f0ef;
+    --primary-900: #d4f7f7;
+    --primary-950: #e9fbfb;
+
+    --secondary-50: #040416;
+    --secondary-100: #08092b;
+    --secondary-200: #0f1257;
+    --secondary-300: #171b82;
+    --secondary-400: #1f23ad;
+    --secondary-500: #262cd9;
+    --secondary-600: #5256e0;
+    --secondary-700: #7d81e8;
+    --secondary-800: #a8abf0;
+    --secondary-900: #d4d5f7;
+    --secondary-950: #e9eafb;
+
+    --accent-50: #0b0416;
+    --accent-100: #15082b;
+    --accent-200: #2b0f57;
+    --accent-300: #401782;
+    --accent-400: #551fad;
+    --accent-500: #6b26d9;
+    --accent-600: #8852e0;
+    --accent-700: #a67de8;
+    --accent-800: #c4a8f0;
+    --accent-900: #e1d4f7;
+    --accent-950: #f0e9fb;
+
+  }
+/*#endregion ============== Theme Options ==============*/
+
+:root {
+    --sidebar-width: 350px;
+}
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
+
+html, body {
+    display: block;
+    width: 100%;
+    height: 100%;
+}
+
+h1, h2 {
+    color: var(--text-500);
+}
+
+h3, h4 {
+    color: var(--text-400);
+}
+
+.main {
+    display: grid;
+    grid-template-rows: 10vh auto 10vh;
+    grid-template-columns: 100%;
+    width: 100%;
+    height: 100%;
+}
+
+.navbar {
+    /* background: red; */
+    background: var(--background-400);
+    display: grid;
+    grid-template-columns: var(--sidebar-width) auto;
+    width: 100%;
+    height: 100%;
+
+    .logo {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        width: 100%;
+        height: 100%; 
+
+        color: white;
+        font-size: 40px;
+        font-weight: bolder;
+        text-decoration: none;
+        text-align: center;
+    }
+
+    .links {
+        position: relative;
+        display: flex;
+        flex-direction: row;
+        justify-content: flex-start;
+        align-items: center;
+        width: 100%;
+        height: 100%; 
+
+        &::before {
+            --vTrim: 5px;
+            --width: 2px; 
+
+            content: "";
+            position: absolute;
+            left: calc(var(--width) / -2);
+            top: var(--vTrim);
+            bottom: var(--vTrim);
+            width: var(--width);
+            background: var(--background-300);
+        }
+
+        .link {
+            position: relative;
+            margin: 0 20px;
+            
+            color: white;
+            font-size: 30px;
+            font-weight: bold;
+            text-decoration: none;
+
+            &::after {
+                content: "";
+                position: absolute;
+                left: 50%;
+                bottom: -10px;
+                width: 0%;
+                height: 3px;
+                background: white;
+                transition: width 0.3s, left 0.3s;
+            }
+
+            &:hover, &.current {
+                &::after {
+                    width: 90%;
+                    left: 5%;
+                }
+            }
+        }
+    }
+}
+
+.content-container {
+    display: grid;
+    grid-template-columns: var(--sidebar-width) auto;
+    width: 100%;
+    height: 100%;
+}
+
+.sidebar {
+    /* background: green; */
+    display: flex;
+    flex-direction: column;
+    background: var(--secondary-800);
+    padding: 10px;
+
+    h3 {
+        --offset: 2em;
+        --marker-color: var(--accent-300);
+        --marker-radius: 0.25em;
+
+        position: relative;
+        display: inline-block;
+        padding-left: calc(var(--offset) + 1em);
+        text-indent: calc(var(--offset) * -1);
+
+        &::before {
+            content: " ";
+            position: absolute;
+            width: var(--marker-radius);
+            height: var(--marker-radius);
+            border-radius: 0.5em;
+            border-color: var(--marker-color);
+            border-style: solid;
+            background: var(--marker-color);
+            left: 0em;
+            top: var(--marker-radius);
+        }
+    }
+}
+
+.content {
+    background: var(--secondary-950);
+    padding: 10px;
+}
+
+.entryTable {
+    border-collapse: collapse;
+    border: 2px var(--accent-400) solid;
+
+    thead, .table-row.head {
+        border-bottom: 3px var(--accent-400) solid;
+
+        th, .table-cell {
+            padding: 0 5px;
+        }
+    }
+}
+
+.entry {
+    /* display: flex;
+    flex-direction: row;
+    align-items: center; */
+
+    color: var(--text-200);
+    font-size: 20px;
+
+    &:hover {
+        /* background: var(--accent-500); */
+        background: var(--accent-700);
+        cursor: pointer;
+    }
+
+    * {
+        margin: 0 10px;
+    }
+
+    td, .table-cell {
+        position: relative;
+        /* text-align: center;  */
+        vertical-align: middle;
+        padding: 0 5px;
+
+        /* text-align: justify; */
+        /* margin-bottom: -1em !important; */
+
+        border-left: 2px var(--accent-400) solid;
+    }
+}
+
+.interventions .entry {
+    border-bottom: 1px var(--accent-400) solid;
+}
+
+.table {
+    display: table;
+}
+
+.table-row {
+    display: table-row;
+    vertical-align: inherit;
+    unicode-bidi: isolate;
+    border-color: inherit;
+}
+
+.table-cell {
+    display: table-cell;
+}
+
+.footer {
+    display: flex;
+    align-items: center;
+    flex-direction: row-reverse;
+    padding: 10px;
+    background: var(--background-400);
+
+    h3 {
+        color: var(--text-950);
+    }
+}

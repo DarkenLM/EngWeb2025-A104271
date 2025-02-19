@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title><%= aluno?.nome ?? "Desconhecido" %></title>
+    <link rel="stylesheet" href="/assets/css/style.css">
+</head>
+<body>
+    <div class="main">
+        <%- include("../_templates/navbar.ejs") %>
+        <div class="content-container">
+            <div class="sidebar">
+                <% for (const aluno of alunos) { %>
+                    <h3><a href="/alunos/<%= aluno.id %>"><%= aluno.nome %></a></h3>
+                <% } %>
+            </div>
+            <div class="content">
+                <% if (aluno) { %>
+                    <h2>Nome: <%= aluno.nome %></h2>
+                    <h3>ID: <%= aluno.id %></h3>
+                    <h3>Data Nascimento: <%= aluno.dataNasc %></h3>
+                    <h3>Curso: <a href="/cursos/<%= curso.id ?? aluno.curso %>"><%= curso.designacao ?? "Desconhecido" %> (<%= aluno.anoCurso %>º Ano)</a></h3>
+                    <h3>Instrumento: <a href="/instrumentos/<%= encodeURIComponent(aluno.instrumento) %>"><%= aluno.instrumento %></a></h3>
+                <% } else { %>
+                    <h2>Aluno desconhecido</h2>
+                <% } %>
+            </div>
+        </div>
+        <%- include("../_templates/footer.ejs") %>
+    </div>
+
+    <script src="/assets/js/main.js"></script>
+</body>
+</html>
