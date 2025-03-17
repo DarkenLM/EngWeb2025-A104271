@@ -1,0 +1,29 @@
+{
+    "compilerOptions": {
+        "rootDir": "src",
+        "outDir": "dist",
+
+        "target": "ESNext",
+        "module": "ESNext",
+        "lib": ["ESNext"],
+        "declaration": true,
+		"sourceMap": true, 
+
+        "typeRoots": ["./node_modules/@types", "./node_modules/undici-types", "../node_modules/@types", "types"],
+        "types": ["node"],
+
+        "baseUrl": ".",
+        "paths": {
+            "$types/*": ["./types/*"],
+            "undici-types": [
+                "./node_modules/undici-types/index.d.ts"
+            ],
+        },
+
+        "skipLibCheck": true,
+        "allowSyntheticDefaultImports": true,
+        // "rewriteRelativeImportExtensions": true
+    },
+
+    "exclude": [ "node_modules", "types", "dist", "scripts" ]
+}
