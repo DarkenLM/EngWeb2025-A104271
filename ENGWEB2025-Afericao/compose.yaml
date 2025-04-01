@@ -1,0 +1,52 @@
+name: ENGWEB2025-Afericao2
+
+services:
+  api:
+    build: ./ex1
+    container_name: ENGWEB2025-Afericao-api
+    ports:
+      - "17000:17000"
+    depends_on:
+      - mongo
+    environment:
+      MONGO_URI: "mongodb://mongo:27017/livros"
+      PORT: 17000
+    volumes:
+      - ./ex1:/app
+      - /app/node_modules
+    networks:
+      - ew-net
+
+  mongo:
+    build: ./db
+    container_name: ENGWEB2025-Afericao-db
+    environment:
+      - RUN_DB_STARTUP_SCRIPT=${RUN_DB_STARTUP_SCRIPT:-123}
+    ports:
+      - "27018:27017"
+    volumes:
+      - mongoData2025:/data/db
+    networks:
+      - ew-net
+
+  web:
+    build: ./ex2
+    container_name: ENGWEB2025-Afericao-web
+    ports:
+      - "17001:17001"
+    depends_on:
+      - api
+    environment:
+      API_URI: "http://api:17000/books"
+      PORT: 17001
+    volumes:
+      - ./ex2:/app
+      - /app/node_modules
+    networks:
+      - ew-net
+
+networks:
+  ew-net:
+
+volumes:
+  mongoData2025:
