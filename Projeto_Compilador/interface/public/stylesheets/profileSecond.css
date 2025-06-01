@@ -1,0 +1,139 @@
+/* profileSecond.css */
+
+body {
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  background-color: #f4f6f8;
+  margin: 0;
+  padding: 0;
+}
+
+.container {
+  display: flex;
+  min-height: 100vh;
+}
+
+/* Sidebar */
+.sidebar-left {
+  width: 200px;
+  background: #ffffff;
+  box-shadow: 2px 0 5px rgba(0,0,0,0.05);
+  padding: 20px;
+}
+
+.sidebar-left h2 {
+  font-size: 1.2rem;
+  margin-bottom: 1rem;
+}
+
+.sidebar-left ul {
+  list-style: none;
+  padding: 0;
+}
+
+.sidebar-left li {
+  margin-bottom: 10px;
+}
+
+.sidebar-left a {
+  text-decoration: none;
+  color: #0078d7;
+}
+
+/* Conteúdo principal */
+.content {
+  flex: 1;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 40px;
+}
+
+form {
+  background: #ffffff;
+  padding: 40px;
+  border-radius: 20px;
+  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.08);
+  width: 100%;
+  max-width: 450px;
+  display: flex;
+  flex-direction: column;
+  gap: 25px;
+}
+
+form h1 {
+  text-align: center;
+  color: #0078d7;
+  font-size: 1.8rem;
+  margin-bottom: 10px;
+}
+
+form div {
+  display: flex;
+  flex-direction: column;
+}
+
+label {
+  font-weight: bold;
+  color: #333;
+  margin-bottom: 6px;
+}
+
+input[type="password"] {
+  padding: 10px 12px;
+  font-size: 1rem;
+  border: 1px solid #ccc;
+  border-radius: 8px;
+  transition: border-color 0.2s ease;
+}
+
+input[type="password"]:focus {
+  border-color: #0078d7;
+  outline: none;
+}
+
+button[type="submit"],
+button[type="button"] {
+  padding: 10px 18px;
+  border: none;
+  border-radius: 30px;
+  background-color: #0078d7;
+  color: white;
+  font-weight: bold;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+  font-size: 1rem;
+}
+
+button[type="submit"]:hover,
+button[type="button"]:hover {
+  background-color: #005ea3;
+}
+
+.error-message {
+  color: #d0342c;
+  font-size: 0.85rem;
+  margin-top: 5px;
+  padding-left: 4px;
+  font-style: italic;
+}
+
+/* Responsivo */
+@media (max-width: 768px) {
+  .container {
+    flex-direction: column;
+  }
+
+  .sidebar-left {
+    width: 100%;
+    box-shadow: none;
+    border-bottom: 1px solid #eee;
+  }
+
+  .content {
+    padding: 20px;
+  }
+
+  form {
+    padding: 25px;
+  }
+}

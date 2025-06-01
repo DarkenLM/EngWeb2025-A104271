@@ -1,0 +1,8 @@
+<!-- views/components/producerCard.ejs -->
+<a href="/consumidor/<%= producer.username %>" class="producer-card">
+  <img src="<%= producer.avatarUrl || '/images/default-avatar.png' %>" alt="Avatar de <%= producer.username %>" class="producer-avatar">
+  <div class="producer-info">
+    <div class="producer-name"><%= producer.fname %> <%= producer.lname %></div>
+    <div class="producer-username">@<%= producer.username %></div>
+  </div>
+</a>

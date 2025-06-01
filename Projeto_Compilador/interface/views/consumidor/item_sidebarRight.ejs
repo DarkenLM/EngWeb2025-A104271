@@ -1,0 +1,22 @@
+<h3>Comentários</h3>
+
+<% if (post.comments && post.comments.length > 0) { %>
+  <div class="comment-list">
+    <% post.comments.forEach(comment => { %>
+      <div class="comment-box">
+        <div class="comment-header">
+          <img class="comment-avatar" src="<%= '/vault/' + comment.avatarUrl || '/images/default-avatar.png' %>" alt="avatar de <%= comment.author %>">
+          <div class="comment-user">
+            <strong><%= comment.author %></strong><br>
+            <small><%= new Date(comment.created_at).toLocaleString("pt-PT") %></small>
+          </div>
+        </div>
+        <div class="comment-text">
+          <p><%= comment.content %></p>
+        </div>
+      </div>
+    <% }) %>
+  </div>
+<% } else { %>
+  <p>Sem comentários ainda.</p>
+<% } %>

@@ -1,0 +1,31 @@
+services:
+  engwebDB:
+    container_name: mongoEW
+    image: mongo:latest
+    restart: always
+    ports:
+      - "27017:27017"
+    environment:
+      MONGO_INITDB_DATABASE: diario
+    volumes:
+      - /data/db
+      - ./mongo-dump:/dump
+
+
+## Run
+# docker compose up -d
+
+## To stop
+# docker compose down
+
+## To stop and delete the data
+# docker compose down -v
+
+## IMPORTANTE
+## Afinal tens de usar isto no terminal (fui ver algumas cenas sobre partilhar o volume e afinal nao é a mlhero ideia de sempre)
+# - Dar save da data na source
+#docker exec mongoEW mongodump --db=diario --out=/dump
+
+# - Carregar a data do source para o mongo
+#docker exec mongoEW mongorestore --drop --db=diario /dump/diario
+

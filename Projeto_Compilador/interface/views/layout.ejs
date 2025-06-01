@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html lang="pt">
+<head>
+  <meta charset="UTF-8" />
+  <title><%= title %></title>
+  <link rel="stylesheet" href="/stylesheets/layout.css" />
+  <% if (pageCss) { pageCss.forEach(css => { %>
+    <link rel="stylesheet" href="<%= css %>">
+  <% }) } %>
+</head>
+<body>
+  <div class="container">
+    <aside class="sidebar-left">
+      <%- include(sidebarLeft) %>
+    </aside>
+
+    <main class="content">
+      <%- include(content) %>
+    </main>
+
+    <aside class="sidebar-right">
+      <%- include(sidebarRight) %>
+    </aside>
+  </div>
+</body>
+</html>

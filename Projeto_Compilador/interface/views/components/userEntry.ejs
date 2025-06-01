@@ -1,0 +1,17 @@
+<article class="post-card">
+  <a href="/administrador/utilizadores/<%= user.username %>" class="post-producer">
+    <h2 class="post-title"><%= user.username %></h2>
+    <div class="post-info">
+        <div>
+            <p><%= user.email %></p>
+            <p><%= user.fname %> <%= user.lname %></p>
+            <p><%= user.type %></p>
+        </div>
+    </div>
+  </a>
+  <div>
+    <button onclick="deleteEntry('<%= user._id %>')">
+      Apagar
+    </button>
+  </div>
+</article>

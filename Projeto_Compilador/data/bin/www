@@ -1,0 +1,133 @@
+#!/usr/bin/env node
+
+/**
+ * Module dependencies.
+ */
+
+let app = require('../app');
+let debug = require('debug')('data:server');
+let http = require('http');
+const { exec } = require('child_process');
+let isShuttingDown = false;
+
+/**
+ * Get port from environment and store in Express.
+ */
+
+let port = normalizePort(process.env.PORT || '3000');
+app.set('port', port);
+
+/**
+ * Create HTTP server.
+ */
+
+let server = http.createServer(app);
+
+/**
+ * Listen on provided port, on all network interfaces.
+ */
+
+server.listen(port);
+server.on('error', onError);
+server.on('listening', onListening);
+
+// Graceful shutdown on Ctrl+C
+// Chatgpt gibberish - i think it works
+/**
+ * Gracefully shuts down the server and saves the mongoDB data in the dump file
+ */
+process.on('SIGINT', async () => {
+	if (isShuttingDown) return;
+	isShuttingDown = true;
+
+	console.log('\nGracefully shutting down...');
+	
+	// Close server first
+	server.close(() => {
+		console.log('HTTP server closed.');
+		
+		// Run mongodump via docker
+		const dumpCommand = 'docker exec mongoEW mongodump --db=diario --out=/dump';
+
+		exec(dumpCommand, (error, stdout, stderr) => {
+			if (error) {
+				console.error(`mongodump error: ${error.message}`);
+			} else {
+				console.log('[SETUP] - mongodump completed successfully.');
+				console.log(stdout);
+			}
+
+			// Always exit after dump attempt
+			process.exit(0);
+		});
+	});
+});
+
+/**
+ * Normalize a port into a number, string, or false.
+ */
+
+function normalizePort(val) {
+    let port = parseInt(val, 10);
+
+    if (isNaN(port)) {
+      	// named pipe
+      	return val;
+    }
+
+    if (port >= 0) {
+      	// port number
+      	return port;
+    }
+
+    return false;
+}
+
+/**
+ * Event listener for HTTP server "error" event.
+ */
+
+function onError(error) {
+	if (error.syscall !== 'listen') {
+		throw error;
+	}
+
+	let bind = typeof port === 'string'
+		? 'Pipe ' + port
+		: 'Port ' + port;
+
+	// handle specific listen errors with friendly messages
+	switch (error.code) {
+		case 'EACCES':
+		console.error(bind + ' requires elevated privileges');
+		process.exit(1);
+		break;
+		case 'EADDRINUSE':
+		console.error(bind + ' is already in use');
+		process.exit(1);
+		break;
+		default:
+		throw error;
+	}
+}
+
+/**
+ * Event listener for HTTP server "listening" event.
+ */
+
+function onListening() {
+	const dumpCommand = 'docker exec mongoEW mongorestore --drop --db=diario /dump/diario';
+
+	exec(dumpCommand, (error, stdout, stderr) => {
+		if (error) {
+			console.error(`mongorestore error: ${error.message}`);
+		} else {
+			console.log('[SETUP] - Mongorestore completed successfully.');
+			console.log('[SETUP] - Database loaded.');
+			console.log(stdout);
+		}
+		
+		console.log(`Data service listening on port ${port}...`);
+	});
+	
+}

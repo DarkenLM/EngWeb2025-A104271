@@ -1,0 +1,44 @@
+<article class="post-card">
+  <a href="/produtor/<%= post._id %>" class="post-link">
+  <h2 class="post-title"><%= post.itemName %></h2>
+  <div class="post-info">
+      <div>
+        <p class="post-author"><strong>Publicado a:</strong> <%= post.insert_date %></p>
+        <p class="post-author"><strong>Visibilidade:</strong> <%= post.visibility == false ? "Privado" : "Público" %></p>
+      </div>
+    </div>
+    
+    <p class="post-description">
+      <%= post.itemDescription && post.itemDescription.trim() !== '' ? post.itemDescription : 'Sem descrição' %>
+    </p>
+  </a>
+
+  <div>
+    <button onclick="updateVisibility('<%= post._id %>', '<%= !post.visibility %>')">
+      <%= post.visibility == false ? "Tornar Público" : "Tornar Privado" %>
+    </button>
+    <button onclick="deleteEntry('<%= post._id %>')">
+      Apagar
+    </button>
+  </div>
+
+  <% 
+    let tags = [];
+    if (post.resources && post.resources.length > 0) {
+      post.resources.forEach(resource => {
+        if (resource.type && Array.isArray(resource.type)) {
+          resource.type.forEach(t => {
+            if (!tags.includes(t)) tags.push(t);
+          });
+        }
+      });
+    }
+  %>
+  <% if (tags.length > 0) { %>
+    <div class="post-tags">
+      <% tags.forEach(tag => { %>
+        <span class="tag">#<%= tag %></span>
+      <% }) %>
+    </div>
+  <% } %>
+</article>

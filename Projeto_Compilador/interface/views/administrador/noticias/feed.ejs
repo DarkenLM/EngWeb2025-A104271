@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="pt">
+<head>
+    <meta charset="UTF-8" />
+    <title>Painel de Administração</title>
+    <link rel="stylesheet" href="/stylesheets/style.css" />
+</head>
+<body>
+    <nav class="w3-sidebar w3-bar-block w3-light-grey w3-card" style="width:200px; height:100vh;">
+      <h3 class="w3-bar-item">Menu</h3>
+      <a href="/administrador/noticias" class="w3-bar-item w3-button">Notícias</a>
+      <a href="/administrador/utilizadores" class="w3-bar-item w3-button">Utilizadores</a>
+      <li><a href="/profile">Perfil</a></li>
+      <a href="/logout" class="w3-bar-item w3-button">Sair</a>
+    </nav>
+
+    <div style="margin-left:200px">
+      <header class="w3-container w3-teal w3-padding-16 w3-display-container">
+          <h1 class="w3-left">Painel de Administração</h1>
+          <a href="/administrador/noticias/criar" class="w3-button w3-green w3-right w3-margin-right">Criar Notícia</a>
+      </header>
+        <table class="w3-table-all">
+          <tr>
+            <th>Título</th>
+            <th>Descrição</th>
+            <th>Autor</th>
+            <th>Visibilidade</th>
+            <th>Data de Criação</th>
+            <th>Ações</th>
+          </tr>
+
+          <% noticias.forEach(noticia => { %>
+            <tr>
+              <td>
+                <a href="/administrador/noticias/<%= noticia._id %>/editar" class="w3-text-blue">
+                  <%= noticia.title %>
+                </a>
+              </td>
+              <td><%= noticia.description %></td>
+              <td><%= noticia.autor %></td>
+              <td><%= noticia.visibility ? 'Visível' : 'Oculta' %></td>
+              <td><%= new Date(noticia.created_at).toLocaleDateString() %></td>
+              <td>
+                <button class="w3-button w3-red w3-small apagar-btn" data-id="<%= noticia._id %>">
+                  Apagar
+                </button>
+              </td>
+            </tr>
+          <% }) %>
+        </table>
+      </div>
+</body>
+</html>
+
+<script>
+  document.querySelectorAll('.apagar-btn').forEach(btn => {
+    btn.addEventListener('click', async function () {
+      const id = this.dataset.id;
+
+      if (confirm('Tens a certeza que queres apagar esta notícia?')) {
+        try {
+          const response = await fetch(`/administrador/noticias/${id}`, {
+            method: 'DELETE',
+            headers: {
+              'Content-Type': 'application/json'
+            }
+          });
+
+          if (response.ok) {
+            document.getElementById(`row-${id}`).remove();
+          } else {
+            alert("Erro ao apagar a notícia.");
+          }
+        } catch (err) {
+          console.error(err);
+          alert("Erro ao comunicar com o servidor.");
+        }
+      }
+    });
+  });
+</script>

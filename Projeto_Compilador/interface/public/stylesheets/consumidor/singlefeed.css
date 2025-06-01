@@ -1,0 +1,110 @@
+/* Sidebar esquerda fixa */
+aside.sidebar-left h2 {
+  margin-top: 0;
+  color: #222;
+}
+aside.sidebar-left ul {
+  list-style: none;
+  padding-left: 0;
+}
+aside.sidebar-left ul li a {
+  display: block;
+  padding: 8px 12px;
+  color: #444;
+  text-decoration: none;
+  border-radius: 6px;
+  margin-bottom: 6px;
+  transition: background-color 0.2s ease;
+}
+aside.sidebar-left ul li a:hover,
+aside.sidebar-left ul li a.active {
+  background: #0078d7;
+  color: white;
+}
+
+/* Sidebar direita perfil produtor */
+aside.sidebar-right h3 {
+  margin-top: 0;
+  color: #222;
+  margin-bottom: 20px;
+  font-weight: 700;
+}
+
+/* Avatar */
+aside.sidebar-right img.avatar {
+  width: 120px;
+  height: 120px;
+  border-radius: 50%;
+  object-fit: cover;
+  border: 3px solid #0078d7;
+  margin-bottom: 20px;
+  box-shadow: 0 2px 10px rgba(0,120,215,0.3);
+}
+
+/* Nome */
+aside.sidebar-right .producer-name {
+  font-size: 1.5rem;
+  color: #333;
+  margin-bottom: 12px;
+}
+
+/* Email */
+aside.sidebar-right .producer-email {
+  color: #555;
+  font-size: 1rem;
+  word-break: break-word;
+  margin-bottom: 10px;
+}
+aside.sidebar-right .producer-email a {
+  color: #0078d7;
+  text-decoration: none;
+  font-weight: 600;
+}
+aside.sidebar-right .producer-email a:hover {
+  text-decoration: underline;
+}
+
+/* Título da página */
+main.content header h2 {
+  color: #333;
+  margin-bottom: 20px;
+  font-weight: 700;
+  border-bottom: 2px solid #0078d7;
+  padding-bottom: 10px;
+}
+
+/* Lista de posts */
+main.content section.posts-list {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+/* Dropdown de ordenação de posts */
+main.content header form#orderForm {
+  margin-top: 10px;
+  margin-bottom: 20px;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+main.content header form#orderForm label {
+  font-weight: 600;
+  color: #444;
+}
+
+main.content header form#orderForm select {
+  padding: 6px 12px;
+  border-radius: 6px;
+  border: 1px solid #ccc;
+  background: #fff;
+  font-size: 1rem;
+  color: #333;
+  cursor: pointer;
+  transition: border-color 0.2s ease;
+}
+
+main.content header form#orderForm select:hover {
+  border-color: #0078d7;
+}

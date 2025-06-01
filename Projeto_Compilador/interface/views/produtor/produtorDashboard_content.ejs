@@ -1,0 +1,74 @@
+<h2>Painel Principal do Produtor</h2>
+      <section class="search-bar">
+        <form method="GET" action="/produtor/dashboard" style="display:flex; width: 100%;">
+          <input type="text" name="search" placeholder="Procurar posts..." value="<%= typeof search !== 'undefined' ? search : '' %>">
+          <button type="submit">Pesquisar</button>
+        </form>
+      </section>
+      
+      <section class="options">
+          <a href="/produtor/form">
+              <button>Novo Post</button>
+          </a>
+      </section>
+
+      <section>
+        <h3>Os meus posts...</h3>
+        <% entries.sort((a, b) => b.date - a.date).forEach(post => { %>
+          <%- include('../components/postProdutor', { post }) %>
+        <% }) %>
+      </section>
+
+<script>
+
+    async function updateVisibility(entryID, newState) {
+        try {
+            let res = await fetch(`http://localhost:3001/produtor/${entryID}`, {
+                method: "PUT",
+                credentials: "include",
+                headers: {
+                    "Content-Type": "application/json"
+                },
+                body: JSON.stringify({ visibility: newState })
+            });
+
+            if (res.ok) {
+                window.location.href = "/produtor/dashboard";
+            } else {
+                let errorBody;
+                try {
+                    errorBody = await res.json();
+                } catch (e) {
+                    console.error("Non-JSON error response:", await res.text());
+                    return;
+                }
+            }
+        } catch (err) {
+            console.error("Delete error: ", err);
+        }
+    }
+
+    async function deleteEntry(entryID) {
+        try {
+            let res = await fetch(`http://localhost:3001/produtor/${entryID}`, {
+                method: "DELETE",
+                credentials: "include",
+            });
+
+            if (res.ok) {
+                window.location.href = "/produtor/dashboard";
+            } else {
+                let errorBody;
+                try {
+                    errorBody = await res.json();
+                } catch (e) {
+                    console.error("Non-JSON error response:", await res.text());
+                    return;
+                }
+
+            }
+        } catch (err) {
+            console.error("Delete error: ", err);
+        }
+    }
+</script>

@@ -1,0 +1,272 @@
+
+<!DOCTYPE html>
+<html lang="pt">
+    <head>
+        <meta charset="UTF-8"/>
+        <title>Administrador - Editar Utilizador</title>
+        <link rel="stylesheet" href="/stylesheets/profile.css"/>
+    </head>
+    <body>
+        <div class="profile-container">
+            <h1>Editar Utilizador</h1>
+
+            <!-- Avatar do utilizador -->
+            <div>
+            <img src="<%= user.avatar ? `/profile/avatar/${user.avatar}` : '/images/default-avatar.png' %>" alt="Avatar" class="avatar"/>
+            <form action="/profile/avatar" method="POST" enctype="multipart/form-data" class="avatar-form">
+                <input type="file" name="avatar" accept="image/*" required/>
+                <button type="submit">Alterar Foto</button>
+            </form>
+            </div>
+
+            <!-- Campos editáveis -->
+            <div class="profile-field">
+            <b>Username:</b> 
+            <span id="username"><%= user.username %></span>
+            <button type="button" onclick="editField('username')">✏️</button>
+            </div>
+            <div id="usernameError" class="error-message"></div>
+
+            <div class="profile-field">
+            <b>First Name:</b>
+            <span id="fname"><%= user.fname %></span>
+            <button type="button" onclick="editField('fname')">✏️</button>
+            </div>
+            <div id="fnameError" class="error-message"></div>
+
+            <div class="profile-field">
+            <b>Last Name:</b>
+            <span id="lname"><%= user.lname %></span>
+            <button type="button" onclick="editField('lname')">✏️</button>
+            </div>
+            <div id="lnameError" class="error-message"></div>
+
+            <div class="profile-field">
+            <b>Email:</b>
+            <span id="email"><%= user.email %></span>
+            <button type="button" onclick="editField('email')">✏️</button>
+            </div>
+            <div id="emailError" class="error-message"></div>
+
+            <div class="buttons">
+            <button type="button" onclick="save()">Save</button>
+            <button type="button" onclick="logout()">Logout</button>
+            </div>
+
+            <div id="currentState" class="currentState"></div>
+
+            <div class="change-password">
+            <p onclick="window.location.href='/profile/password'"><b>Change Password</b></p>
+            </div>
+        </div>
+    </body>
+</html>
+
+<script>
+let originalData = {
+    username: "<%= user.username %>",
+    fname: "<%= user.fname %>",
+    lname: "<%= user.lname %>",
+    email: "<%= user.email %>"
+};
+
+function checkUnsavedChanges() {
+    const currentData = {
+        username: document.getElementById("username")?.textContent,
+        fname: document.getElementById("fname")?.textContent,
+        lname: document.getElementById("lname")?.textContent,
+        email: document.getElementById("email")?.textContent
+    };
+
+    const unsaved = Object.keys(originalData).some(
+        key => currentData[key] !== originalData[key]
+    );
+
+    document.getElementById("currentState").textContent = unsaved 
+        ? "⚠️ You have unsaved changes. Press Save to confirm." 
+        : "";
+}
+
+function showError(fieldId, message) {
+    document.getElementById(fieldId + "Error").textContent = message;
+}
+
+function clearError(fieldId) {
+    document.getElementById(fieldId + "Error").textContent = "";
+}
+
+function validateField(fieldId, value){
+    switch(fieldId) {
+        case "username":
+            if (!value.trim()) {
+                showError(field, "Nome de utilizador inválido");
+                return false;
+            }
+            break;
+        case "fname":
+            if (!value.trim()) {
+                showError(fieldId, "Falta preencher o seu primeiro nome");
+                return false;
+            } else if (!/^[A-Z][a-z]*/.test(value)) {
+                showError(fieldId, "O primeiro nome deve começar por uma maiúscula");
+                return false;
+            }
+            break;
+        case "lname":
+            if (!value.trim()) {
+                showError(fieldId, "Falta preencher o seu último nome");
+                return false;
+            } else if (!/^[A-Z][a-z]*/.test(value)) {
+                showError(fieldId, "O último nome deve começar por uma maiúscula");
+                return false;
+            }
+            break;
+        case "email":
+            if (!value.trim()) {
+                showError(fieldId, "Falta preencher o email");
+                return false;
+            } else if (!/^[^@]+@[^@]+\.[^@]+$/.test(value)) {
+                showError(fieldId, "O email inserido é inválido");
+                return false;
+            }
+            break;
+        default:
+            return true;
+    }
+
+    clearError(fieldId);
+    return true;
+}
+
+function editField(fieldId) {
+    const span = document.getElementById(fieldId);
+    const currentValue = span.textContent;
+
+    const input = document.createElement("input");
+    input.type = "text";
+    input.value = currentValue;
+    input.id = fieldId;
+    
+
+    input.addEventListener("blur", () => {
+        const newValue = input.value.trim();
+
+        const isValid = validateField(fieldId, newValue);
+        if(isValid){
+            const newSpan = document.createElement("span");
+            newSpan.id = fieldId;
+            newSpan.textContent = newValue;
+            input.replaceWith(newSpan);
+            checkUnsavedChanges();
+        } else {
+            input.focus(); 
+        }
+    });
+
+    input.addEventListener("keydown", function (e) {
+        if (e.key == "Enter"){
+            input.blur();
+        }
+    })
+
+    span.replaceWith(input);
+    input.focus();
+}
+
+async function save() {
+    const updatedData = {
+        username: document.getElementById("username").innerText,
+        fname: document.getElementById("fname").innerText,
+        lname: document.getElementById("lname").innerText,
+        email: document.getElementById("email").innerText,
+    };
+
+    try {
+        let res = await fetch("http://localhost:3001/profile/admin", {
+            method: "PUT",
+            credentials: "include",
+            headers: {
+                "Content-Type": "application/json",
+            },
+            body: JSON.stringify(updatedData)
+        })
+        if (res.ok) {
+            originalData = {
+                username: document.getElementById("username").textContent,
+                fname: document.getElementById("fname").textContent,
+                lname: document.getElementById("lname").textContent,
+                email: document.getElementById("email").textContent,
+            };
+            document.getElementById("currentState").textContent = "";
+        } else {
+            let errorBody;
+            try {
+                errorBody = await res.json();
+            } catch (e) {
+                console.error("Non-JSON error response:", await res.text());
+                alert("Erro inesperado do servidor.");
+                return;
+            }
+            
+            if (res.status === 409) {
+                if (errorBody.code === 409.1) {
+                    alert("O Username já está a ser usado!");
+                    return;
+                } else if (errorBody.code === 409.2) {
+                    alert("O email já está a ser usado!");
+                    return;
+                }
+            } else if (res.status == 400){
+                switch (errorBody.code) {
+                    case 400.1:
+                        alert("Username inválido.");
+                        break;
+                    case 400.2:
+                        alert("Primeiro nome inválido.");
+                        break;
+                    case 400.3:
+                        alert("Último nome inválido.");
+                        break;
+                    case 400.4:
+                        alert("Email inválido.");
+                        break;
+                    default:
+                        alert("Erro de validação: " + (errorBody.message || "Dados inválidos."));
+                }
+                return;
+            }
+
+            alert("Erro ao atualizar perfil.");
+        }
+    } catch (err) {
+        console.error("Update error: ", err);
+    }
+}
+
+function logout() {
+    window.location.href = "/logout";
+}
+
+</script>
+
+<style>
+.error-message {
+    color: red;
+}
+
+.currentState {
+    margin-top: 15px;
+    color: orange;
+    font-weight: bold;
+}
+
+.avatar {
+    width: 120px;
+    height: 120px;
+    border-radius: 50%;
+    object-fit: cover;
+    border: 2px solid #ccc;
+    display: block;
+    margin-bottom: 10px;
+}
+</style>

@@ -1,0 +1,10 @@
+<h3>Perfil do produtor</h3>
+    <img 
+        src="<%= user.avatar ? `/vault/${user.avatar}` : '/images/default-avatar.png' %>" 
+        alt="Avatar de <%= user.fname %>" 
+        class="avatar"
+    />
+    <div class="producer-name"><%= user.fname %> <%= user.lname %></div>
+    <div class="producer-email">
+        <a href="mailto:<%= user.email %>"><%= user.email %></a>
+    </div>

@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="pt">
+<head>
+    <meta charset="UTF-8" />
+    <title>Painel Administração</title>
+    <link rel="stylesheet" href="/stylesheets/style.css" />
+    <link rel="stylesheet" href="/stylesheets/feed.css" />
+    <link rel="stylesheet" href="/stylesheets/post.css" />
+</head>
+<body>
+  <div class="container">
+    <aside class="sidebar-left">
+      <h2>Menu</h2>
+      <ul>
+        <li><a href="/administrador/utilizadores">Utilizadores</a></li>
+        <li><a href="/administrador/entradas" class="active">Entradas</a></li>
+        <li><a href="/administrador/noticias">Noticias</a></li>
+        <li><a href="/profile">Perfil</a></li>
+        <li><a href="/logout">Sair</a></li>
+      </ul>
+    </aside>
+
+    <main class="content">
+      <h2>Painel de Administração</h2>
+      <section class="search-bar">
+        <form method="GET" action="/administrador/entradas" style="display:flex; width: 100%;">
+          <input type="text" name="search" placeholder="Procurar posts..." value="<%= typeof search !== 'undefined' ? search : '' %>">
+          <button type="submit">Pesquisar</button>
+        </form>
+      </section>
+
+      <section>
+        <h3>Posts</h3>
+        <% posts.sort((a, b) => b.date - a.date).forEach(post => { %>
+          <%- include('../components/post', { post }) %>
+        <% }) %>
+      </section>
+    </main>
+
+    <aside class="sidebar-right">
+      <h3>Filtros</h3>
+      <form method="GET" action="/entradas">
+        <label><input type="checkbox" name="amigos"> Apenas amigos</label>
+        <label><input type="checkbox" name="imagens"> Com imagens</label>
+        <label><input type="checkbox" name="recentes"> Mais recentes</label>
+
+        <h4 style="margin-top: 20px; color: #333;">Tags disponíveis</h4>
+        <div class="tags">
+          <!-- Exemplo tags temporárias -->
+          <span class="tag">reflexao</span>
+          <span class="tag">texto</span>
+          <span class="tag">video</span>
+          <span class="tag">imagem</span>
+          <span class="tag">noticia</span>
+          <span class="tag">artigo</span>
+        </div>
+
+        <button type="submit">Aplicar filtros</button>
+      </form>
+    </aside>
+  </div>
+</body>
+</html>

@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="pt">
+<head>
+    <meta charset="UTF-8"/>
+    <title>Criar Notícia</title>
+    <link rel="stylesheet" href="/stylesheets/common/login.css"/>
+</head>
+<body>
+    <form onsubmit="return validateForm()" method="POST" class="w3-display-middle">
+
+        <h1>Criar Nova Notícia</h1>
+
+        <% if (typeof errors !== 'undefined' && errors.length > 0) { %>
+            <ul class="error-list">
+                <% errors.forEach(function(error) { %>
+                    <li class="error-entry"><%= error %></li>
+                <% }) %>
+            </ul>
+        <% } %>
+
+        <div>
+            <label for="title">Título</label>
+            <input type="text" id="title" name="title" placeholder="Introduza o título da notícia" oninput="validateTitle()" />
+            <span id="titleError" class="error-message"></span>
+        </div>
+
+        <div>
+            <label for="description">Descrição</label>
+            <textarea id="description" name="description" placeholder="Escreva a descrição..." oninput="validateDescription()"></textarea>
+            <span id="descriptionError" class="error-message"></span>
+        </div>
+
+        <div class="checkbox-wrapper">
+            <input type="checkbox" id="visibility" name="visibility" />
+            <label for="visibility">Notícia pública</label>
+        </div>
+
+        <button type="submit">Publicar Notícia</button>
+
+        <div class="login-redirect">
+            <p><a href="/administrador/noticias">Voltar à lista de notícias</a></p>
+        </div>
+    </form>
+</body>
+</html>
+
+<script>
+    function validateTitle() {
+        const title = document.getElementById("title").value.trim();
+        if (title.length === 0) {
+            document.getElementById("titleError").textContent = "O título é obrigatório.";
+            return false;
+        }
+
+        document.getElementById("titleError").textContent = "";
+        return true;
+    }
+
+    function validateDescription() {
+        const desc = document.getElementById("description").value.trim();
+        if (desc.length === 0) {
+            document.getElementById("descriptionError").textContent = "A descrição é obrigatória.";
+            return false;
+        }
+
+        document.getElementById("descriptionError").textContent = "";
+        return true;
+    }
+
+    function validateForm() {
+        const validTitle = validateTitle();
+        const validDesc = validateDescription();
+        return validTitle && validDesc;
+    }
+</script>

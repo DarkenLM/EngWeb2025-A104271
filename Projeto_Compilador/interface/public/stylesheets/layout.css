@@ -1,0 +1,57 @@
+/* Layout geral - full height com flexbox */
+body, html {
+    height: 100%;
+    margin: 0;
+    background: #f0f2f5;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
+
+.container {
+    display: flex;
+    height: 100vh;
+    overflow: hidden;
+}
+
+/* Sidebar esquerda fixa */
+aside.sidebar-left {
+    width: 220px;
+    background: rgba(255,255,255,0.8);
+    backdrop-filter: blur(10px);
+    box-shadow: 2px 0 8px rgba(0,0,0,0.1);
+    padding: 20px;
+    overflow-y: auto;
+}
+
+/* Sidebar direita (filtros) */
+aside.sidebar-right {
+    width: 300px;
+    background: rgba(255,255,255,0.7);
+    backdrop-filter: blur(12px);
+    box-shadow: -2px 0 8px rgba(0,0,0,0.1);
+    padding: 20px;
+    overflow-y: auto;
+}
+
+/* Zona central main content */
+main.content {
+    flex: 1;
+    padding: 25px 30px;
+    overflow-y: auto;
+    background: rgba(255,255,255,0.9);
+    backdrop-filter: saturate(180%) blur(15px);
+    display: flex;
+    flex-direction: column;
+}
+
+/* Scrollbar custom */
+aside.sidebar-left::-webkit-scrollbar,
+aside.sidebar-right::-webkit-scrollbar,
+main.content::-webkit-scrollbar {
+    width: 8px;
+}
+aside.sidebar-left::-webkit-scrollbar-thumb,
+aside.sidebar-right::-webkit-scrollbar-thumb,
+main.content::-webkit-scrollbar-thumb {
+    background-color: rgba(0,0,0,0.1);
+    border-radius: 4px;
+}

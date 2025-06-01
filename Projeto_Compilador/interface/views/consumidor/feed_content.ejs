@@ -1,0 +1,13 @@
+<section class="search-bar">
+    <form method="GET" action="/consumidor/feed" style="display:flex; width: 100%;">
+        <input type="text" name="search" placeholder="Procurar posts..." value="<%= typeof search !== 'undefined' ? search : '' %>">
+        <button type="submit">Pesquisar</button>
+    </form>
+</section>
+
+<section>
+    <h3>Posts</h3>
+    <% posts.sort((a, b) => b.date - a.date).forEach(post => { %>
+        <%- include('../components/post', { post }) %>
+    <% }) %>
+</section>

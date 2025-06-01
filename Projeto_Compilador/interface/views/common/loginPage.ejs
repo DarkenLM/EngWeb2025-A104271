@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="pt">
+    <head>
+        <meta charset="UTF-8"/>
+        <title>Página de Login</title>
+        <link rel="stylesheet" href="/stylesheets/common/login.css"/>
+    </head>
+    <body>
+        <form onsubmit="return validateForm()" method="POST" class="w3-display-middle">
+
+            <h1>Login</h1>
+
+            <% if (typeof errors !== 'undefined' && errors.length > 0) { %>
+                <ul class="error-list">
+                    <% errors.forEach(function(error) { %>
+                        <li class="error-entry"><%= error %></li>
+                    <% }) %>
+                </ul>
+            <% } %>
+
+            <div>
+                <label for="username">Nome do Utilizador</label>
+                <input placeholder="Introduza o username" type="text" id="username" name="username" onblur="handleUsername()" oninput="handleUsername()"/>
+                <span id="usernameError" class="error-message"></span>
+            </div>
+
+            <div>
+                <label for="password">Palavra-passe</label>
+                <input type="password" id="password" name="password" onblur="checkPasswords()"/>
+                <span id="passwordError" class="error-message"></span>
+            </div>
+
+            <button type="submit">Login</button>
+
+            <div class="login-redirect">
+                <p>Não tem uma conta? <a href="/register">Registe-se aqui</a></p>
+            </div>
+        </form>
+    </body>
+</html>
+
+<script>
+
+    function handleUsername() {
+        let username = document.getElementById("username").value;
+        const usernamePattern = /^[a-zA-Z0-9._-]+$/;
+
+        if (username.length === 0) {
+            document.getElementById("usernameError").textContent = "Falta preencher o nome de utilizador";
+            return false;
+        }
+
+        if (!username.match(usernamePattern)) {
+            document.getElementById("usernameError").textContent = "O nome de utilizador contém caracteres inválidos.";
+            return false;
+        }
+
+        document.getElementById("usernameError").textContent = "";
+        return true;
+    }
+
+    function checkPasswords() {
+        let password = document.getElementById("password").value;
+
+        if (password.length === 0) {
+            document.getElementById("passwordError").textContent = "Falta preencher a palavra-passe";
+            return false;
+        }
+        
+        document.getElementById("passwordError").textContent = "";
+        return true;
+    }
+
+    function validateForm() {
+        const usernameValid  = handleUsername();
+        const passwordsValid = checkPasswords();
+
+        return usernameValid && passwordsValid;
+    }
+
+</script>

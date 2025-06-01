@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html lang="pt">
+<head>
+  <meta charset="UTF-8" />
+  <title>Alterar Palavra-passe</title>
+  <link rel="stylesheet" href="/stylesheets/consumidor/feed.css" />
+  <link rel="stylesheet" href="/stylesheets/profile.css" />
+  <link rel="stylesheet" href="/stylesheets/profileSecond.css" />
+</head>
+<body>
+  <div class="container">
+    <!-- Sidebar -->
+    <aside class="sidebar-left">
+      <h2>Menu</h2>
+      <ul>
+        <li><a href="#" onclick="history.back(); return false;">Voltar</a></li>
+        <li><a href="/logout">Sair</a></li>
+      </ul>
+    </aside>
+
+    <!-- Conteúdo principal -->
+    <main class="content">
+      <form onsubmit="return validateChangePassword()" method="POST" action="/profile/password">
+        <h1>Alterar Palavra-passe</h1>
+
+        <div>
+          <label for="currentPassword">Palavra-passe atual</label>
+          <input type="password" id="currentPassword" name="currentPassword" required />
+          <span id="currentPasswordError" class="error-message"></span>
+        </div>
+
+        <div>
+          <label for="newPassword">Nova palavra-passe</label>
+          <input type="password" id="newPassword" name="newPassword" required onblur="validateField('newPassword', this.value)" />
+          <span id="newPasswordError" class="error-message"></span>
+        </div>
+
+        <div>
+          <label for="confirmPassword">Confirmar palavra-passe</label>
+          <input type="password" id="confirmPassword" name="confirmPassword" required onblur="validateField('confirmPassword', this.value)" />
+          <span id="confirmPasswordError" class="error-message"></span>
+        </div>
+
+        <div style="display: flex; gap: 10px; justify-content: center;">
+          <button type="submit">Alterar</button>
+          <button type="button" onclick="history.back()">Cancelar</button>
+        </div>
+      </form>
+    </main>
+  </div>
+
+  <script>
+    function showError(fieldId, message) {
+      document.getElementById(fieldId + "Error").textContent = message;
+    }
+
+    function clearError(fieldId) {
+      document.getElementById(fieldId + "Error").textContent = "";
+    }
+
+    function validateField(fieldId, value) {
+      if (fieldId === "newPassword") {
+        const passwordRegex = /^(?=.*[A-Za-z])(?=.*\d)(?=.*[@$%*#?&!^])[A-Za-z\d@$%*#?&!^]{8,}$/;
+        if (!passwordRegex.test(value)) {
+          showError(fieldId, "A palavra-passe deve ter pelo menos 8 caracteres, incluindo letra, número e caractere especial.");
+          return false;
+        }
+      }
+
+      if (fieldId === "confirmPassword") {
+        const newPassword = document.getElementById("newPassword").value;
+        if (value !== newPassword) {
+          showError(fieldId, "As palavras-passe não coincidem.");
+          return false;
+        }
+      }
+
+      clearError(fieldId);
+      return true;
+    }
+
+    function validateChangePassword() {
+      const currentPassword = document.getElementById("currentPassword").value;
+      const newPassword = document.getElementById("newPassword").value;
+      const confirmPassword = document.getElementById("confirmPassword").value;
+
+      let isValid = true;
+
+      if (!currentPassword.trim()) {
+        showError("currentPassword", "Introduza a palavra-passe atual.");
+        isValid = false;
+      } else {
+        clearError("currentPassword");
+      }
+
+      const newValid = validateField("newPassword", newPassword);
+      const confirmValid = validateField("confirmPassword", confirmPassword);
+
+      return isValid && newValid && confirmValid;
+    }
+  </script>
+</body>
+</html>

@@ -1,0 +1,42 @@
+<h3 style="margin-top: 20px; color: #333;">Tags disponíveis</h3>
+<form method="GET" action="/produtor/dashboard" id="tagFilterForm">
+    <div class="tags">
+        <% tags.tags.forEach(tag => { %>
+            <span class="tag" data-tag="<%= tag %>"><%= tag %></span>
+        <% }) %>
+    </div>
+
+    <!-- Hidden input que será preenchido com tags selecionadas -->
+    <input type="hidden" name="tags" id="selectedTagsInput">
+
+    <button type="submit">Aplicar filtros</button>
+</form>
+
+<script>
+    document.addEventListener('DOMContentLoaded', () => {
+        const tagElements = document.querySelectorAll('.tag');
+        const selectedTagsInput = document.getElementById('selectedTagsInput');
+        const tagFilterForm = document.getElementById('tagFilterForm');
+        const selectedTags = new Set();
+
+        tagElements.forEach(tagEl => {
+            tagEl.addEventListener('click', () => {
+                const tag = tagEl.dataset.tag;
+
+                // Toggle da seleção
+                if (selectedTags.has(tag)) {
+                    selectedTags.delete(tag);
+                    tagEl.classList.remove('active');
+                } else {
+                    selectedTags.add(tag);
+                    tagEl.classList.add('active');
+                }
+            });
+        });
+
+        tagFilterForm.addEventListener('submit', (e) => {
+            // Antes de enviar, garantir que os valores estão no input hidden
+            selectedTagsInput.value = Array.from(selectedTags).join(',');
+        });
+    });
+</script>

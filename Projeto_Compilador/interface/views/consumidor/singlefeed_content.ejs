@@ -1,0 +1,17 @@
+<header>
+    <h2>Posts de <%= user.fname %> <%= user.lname %></h2>
+
+    <form method="GET" action="" id="orderForm">
+        <label for="order">Ordenar por:</label>
+        <select name="order" id="order" onchange="document.getElementById('orderForm').submit()">
+            <option value="desc" <%= order === 'desc' ? 'selected' : '' %>>Mais recentes primeiro</option>
+            <option value="asc" <%= order === 'asc' ? 'selected' : '' %>>Mais antigos primeiro</option>
+        </select>
+    </form>
+</header>
+
+<section class="posts-list">
+    <% posts.forEach(post => { %>
+        <%- include('../components/post', { post }) %>
+    <% }); %>
+</section>

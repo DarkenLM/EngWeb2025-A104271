@@ -1,0 +1,31 @@
+<a href="/consumidor/<%= post.productor_id %>/<%= post._id %>" class="post-link">
+  <article class="post-card">
+    <h2 class="post-title"><%= post.itemName %></h2>
+    <p class="post-author"><strong>Autor:</strong> <%= post.productor_id %></p>
+    <p class="post-author"><strong>Data:</strong> <%= new Date(post.insert_date).toLocaleString("pt-PT") %></p>
+
+    <p class="post-description">
+      <%= post.itemDescription && post.itemDescription.trim() !== '' ? post.itemDescription : 'Sem descrição' %>
+    </p>
+
+    <% 
+      let tags = [];
+      if(post.resources && post.resources.length > 0){
+        post.resources.forEach(resource => {
+          if(resource.type && Array.isArray(resource.type)) {
+            resource.type.forEach(t => {
+              if(!tags.includes(t)) tags.push(t);
+            });
+          }
+        });
+      }
+    %>
+    <% if(tags.length > 0) { %>
+      <div class="post-tags">
+        <% tags.forEach(tag => { %>
+          <span class="tag">#<%= tag %></span>
+        <% }) %>
+      </div>
+    <% } %>
+  </article>
+</a>

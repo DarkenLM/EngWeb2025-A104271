@@ -1,0 +1,146 @@
+<!DOCTYPE html>
+<html lang="pt">
+<head>
+    <meta charset="UTF-8" />
+    <title>Painel Principal</title>
+    <link rel="stylesheet" href="/stylesheets/style.css" />
+    <link rel="stylesheet" href="/stylesheets/feed.css" />
+    <link rel="stylesheet" href="/stylesheets/post.css" />
+</head>
+<body>
+  <div class="container">
+    <aside class="sidebar-left">
+      <h2>Menu</h2>
+      <ul>
+        <li><a href="/produtor/dashboard" class="active">Painel Principal</a></li>
+        <li><a href="/profile">Perfil</a></li>
+        <li><a href="/produtor/form">Formulário</a></li>
+        <li><a href="/logout">Sair</a></li>
+      </ul>
+    </aside>
+
+
+    <!-- TODO Change form action of Pesquisar -->
+    <main class="content">
+      <h2>Painel Principal do Produtor</h2>
+      <section class="search-bar">
+        <form method="GET" action="/produtor/dashboard" style="display:flex; width: 100%;">
+          <input type="text" name="search" placeholder="Procurar posts..." value="<%= typeof search !== 'undefined' ? search : '' %>">
+          <button type="submit">Pesquisar</button>
+        </form>
+      </section>
+      
+      <section class="options">
+          <a href="/produtor/form">
+              <button>Novo Post</button>
+          </a>
+      </section>
+
+      <section>
+        <h3>Os meus posts...</h3>
+        <% entries.sort((a, b) => b.date - a.date).forEach(post => { %>
+          <%- include('../components/postProdutor', { post }) %>
+        <% }) %>
+      </section>
+    </main>
+
+    <aside class="sidebar-right">
+      <h3>Filtros</h3>
+      <form method="GET" action="/produtor/dashboard">
+        <label><input type="checkbox" name="amigos"> Apenas amigos</label>
+        <label><input type="checkbox" name="imagens"> Com imagens</label>
+        <label><input type="checkbox" name="recentes"> Mais recentes</label>
+
+        <h4 style="margin-top: 20px; color: #333;">Tags disponíveis</h4>
+        <div class="tags">
+          <span class="tag">reflexao</span>
+          <span class="tag">texto</span>
+          <span class="tag">video</span>
+          <span class="tag">imagem</span>
+          <span class="tag">noticia</span>
+          <span class="tag">artigo</span>
+        </div>
+
+        <button type="submit">Aplicar filtros</button>
+      </form>
+    </aside>
+  </div>
+</body>
+</html>
+
+<script>
+
+    async function updateVisibility(entryID, newState) {
+        try {
+            let res = await fetch(`http://localhost:3001/produtor/${entryID}`, {
+                method: "PUT",
+                credentials: "include",
+                headers: {
+                    "Content-Type": "application/json"
+                },
+                body: JSON.stringify({ visibility: newState })
+            });
+
+            if (res.ok) {
+                window.location.href = "/produtor/dashboard";
+            } else {
+                let errorBody;
+                try {
+                    errorBody = await res.json();
+                } catch (e) {
+                    console.error("Non-JSON error response:", await res.text());
+                    return;
+                }
+            }
+        } catch (err) {
+            console.error("Delete error: ", err);
+        }
+    }
+
+    async function deleteEntry(entryID) {
+        try {
+            let res = await fetch(`http://localhost:3001/produtor/${entryID}`, {
+                method: "DELETE",
+                credentials: "include",
+            });
+
+            if (res.ok) {
+                window.location.href = "/produtor/dashboard";
+            } else {
+                let errorBody;
+                try {
+                    errorBody = await res.json();
+                } catch (e) {
+                    console.error("Non-JSON error response:", await res.text());
+                    return;
+                }
+
+            }
+        } catch (err) {
+            console.error("Delete error: ", err);
+        }
+    }
+
+</script>
+
+<style>
+
+.w3-display-middle {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+}
+
+.w3-display-middle input {
+    width: 100%;
+}
+
+.w3-display-middle select {
+    width: 100%;
+}
+
+.w3-display-middle h1 {
+    font-weight: bold;
+}
+
+</style>

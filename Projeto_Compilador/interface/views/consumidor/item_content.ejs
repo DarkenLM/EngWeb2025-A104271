@@ -1,0 +1,82 @@
+<div class="post-header">
+    <h1><%= post.itemName %></h1>
+    <p class="post-author">
+      por <strong><%= post.user.fname %> <%= post.user.lname %></strong>
+    </p>
+    <% if (post.description) { %>
+      <p class="post-description"><%= post.description %></p>
+    <% } %>
+</div>
+
+<% if (post.tags && post.tags.length > 0) { %>
+    <div class="post-tags">
+        <% post.tags.forEach(tag => { %>
+            <span class="tag">#<%= tag %></span>
+        <% }) %>
+    </div>
+<% } %>
+
+<% if (post.resources && post.resources.length > 0) { 
+    const images = post.resources.filter(r => r.mimetype.startsWith('image/'));
+    const others = post.resources.filter(r => !r.mimetype.startsWith('image/'));
+%>
+
+<% if (images.length > 0) { %>
+    <div class="post-images">
+    <% images.forEach(img => { %>
+        <div class="image-wrapper">
+        <img src="/vault/<%= img.checksum %>" alt="<%= img.title || 'imagem' %>">
+        <% if (img.title) { %><p class="resource-title"><%= img.title %></p><% } %>
+        </div>
+    <% }) %>
+    </div>
+<% } %>
+
+<% if (others.length > 0) { %>
+    <div class="post-resources">
+    <h4>Recursos</h4>
+    <ul>
+        <% others.forEach(resource => { %>
+        <li>
+            <a href="/vault/<%= resource.checksum %>" download>
+            📎 <%= resource.title || resource.originalPath %> (<%= resource.mimetype %>)
+            </a>
+        </li>
+        <% }) %>
+    </ul>
+    </div>
+<% } %>
+<% } %>
+
+<% if (post.comment) { %>
+<div class="post-comment">
+    <h4>Comentário</h4>
+    <p><%= post.comment %></p>
+</div>
+<% } %>
+
+<div class="post-date">
+    <small>Publicado em: <%= new Date(post.insert_date).toLocaleString("pt-PT") %></small>
+</div>
+
+<div class="post-back">
+    <button onclick="history.back()">← Voltar</button>
+</div>
+
+<!-- Botão para ativar o formulário -->
+<div class="post-add-comment">
+  <button onclick="toggleCommentForm()">💬 Comentar</button>
+
+  <!-- Formulário escondido -->
+  <form id="comment-form" action="/consumidor/<%= post.productor_id %>/<%= post._id %>" method="POST" style="display:none; margin-top: 10px;">
+    <textarea name="content" placeholder="Escreve o teu comentário..." required style="width: 100%; min-height: 80px;"></textarea>
+    <button type="submit">Enviar</button>
+  </form>
+</div>
+
+<script>
+  function toggleCommentForm() {
+    const form = document.getElementById('comment-form');
+    form.style.display = form.style.display === 'none' ? 'block' : 'none';
+  }
+</script>
